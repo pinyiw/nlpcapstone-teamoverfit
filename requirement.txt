@@ -1,1 +1,6 @@
-TwitterAPI>=2.5.0
+numpy>=1.14.2
+scipy>=1.0.1
+pandas>=0.22.0
+sklearn>=0.0
+nltk>=3.2.5
+langid>=1.1.6

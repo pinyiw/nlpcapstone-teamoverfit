@@ -3,15 +3,20 @@ import langid
 import re
 import os
 from timer import Timer
+from time import time
+import json
+from functools import reduce
 
-url_regex = '(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9]\.[^\s]{2,})'
 EN_WHITELIST = '0123456789abcdefghijklmnopqrstuvwxyz '  # space is included in whitelist
 apple_tweets_path = './data/apple/tweets/'
 
 unk_url = '<url>'
 
+min_word_count = 3
 max_line = -1
 num_tweet_ex = 5
+
+OUT_DIR = './data/apple/'
 
 def print_lines(lines):
     for line in lines:
@@ -70,14 +75,22 @@ def remove_url(text):
     cur_tokenized = []
     tokenized = text.split()
     for token in tokenized:
-        if not token.startswith('http') and \
-            '.com' not in token:
+        if '.com' not in token and \
+            'http' not in token:
             cur_tokenized.append(token)
         else:
             cur_tokenized.append(unk_url)
     if cur_tokenized[-1] == unk_url:
         cur_tokenized = cur_tokenized[:-1]
     return ' '.join(cur_tokenized)
+
+# return whether the given string is float
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
 
 # Clean text by removing unnecessary characters and altering the format of words.
 def clean_text(text, whitelist):
@@ -109,9 +122,22 @@ def clean_text(text, whitelist):
 
     return text if len(text) > 0 else pre_text
 
+def count_word(lines):
+    word_count = {}
+    total_word_count = 0
+    for _, text in lines:
+        for word in text.split():
+            total_word_count += 1
+            if is_number(word):
+                continue
+            if word not in word_count:
+                word_count[word] = 0
+            word_count[word] += 1
+    return word_count, total_word_count
+
 def output_data(lines, date2stock):
     stock_keys = ['open', 'high', 'low', 'close', 'volume']
-    with open('./data/apple/output.csv', 'w', encoding='utf-8') as file:
+    with open(OUT_DIR + 'output.csv', 'w', encoding='utf-8') as file:
         file.write('date,open,high,low,close,volume,tweet\n')
         for date, text in lines:
             if date not in date2stock:
@@ -121,6 +147,15 @@ def output_data(lines, date2stock):
             tokens += tuple([stock_data[key] for key in stock_keys])
             tokens += tuple([text])
             file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
+
+def output_vocab(vocab_set):
+    idx = 0
+    word2idx = {}
+    for word in vocab_set:
+        word2idx[word] = idx
+        idx += 1
+    with open(OUT_DIR + 'vocab.json', 'w', encoding='utf-8') as file:
+        json.dump(word2idx, file)
 
 def process_data():
     timer = Timer()
@@ -137,8 +172,22 @@ def process_data():
 
     with timer:
         print('\nClean text...')
+        # only keep alphabet and numbers
         lines = [(date, clean_text(text, EN_WHITELIST)) for date, text in lines]
+        # remove extra white space
+        lines = [(date, ' '.join(text.split())) for date, text in lines]
         print_lines(lines[:num_tweet_ex])
+        # sort by date
+        lines = sorted(lines, key=lambda x : x[0])
+        # vocab
+        word_count, total_word_count = count_word(lines)
+        vocab_set = {word for word in word_count \
+                        if word_count[word] > min_word_count}
+        used_vocab_count = reduce(lambda x, item: x + item[1] \
+                        if item[0] in vocab_set else x, word_count.items(), 0)
+        print('Total number of words: {}'.format(len(word_count)))
+        print('Vocab size: {}'.format(len(vocab_set)))
+        print('{:.2%} of words in vocab.'.format(used_vocab_count / total_word_count))
 
     with timer:
         print('\nLoading stock data...')
@@ -147,13 +196,13 @@ def process_data():
         print('Example of stock data:')
         print({'1980-12-19': date2stock['1980-12-19'],
                '2016-01-21': date2stock['2016-01-21']})
-    
+
     with timer:
         print('\nOutputting data...')
         output_data(lines, date2stock)
-    
+        output_vocab(vocab_set)
 
-
+    print('\nTotal time take: {}s'.format(time() - timer.start_time))
     
 if __name__ == '__main__':
     process_data()
