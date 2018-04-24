@@ -58,16 +58,16 @@ class StockDataSet(object):
         # y = np.array([seq[i + self.num_steps] for i in range(len(seq) - self.num_steps)])
         X = np.array([]).reshape(0, num_features)
         y = np.array([])
-        for date, close, tweets in data_list:
+        for i, (date, close, tweets) in enumerate(data_list[:-1]):
             count_vec = vectorizer.transform(tweets).toarray()
             count_vec = sum(count_vec) # summing the word count for all tweets on date
             count_vec = count_vec / np.linalg.norm(count_vec)
             x = np.array([np.append(count_vec, close)])
             X = np.concatenate((X, x), axis=0) # append closing price to feature
-
+            y = np.append(y, data_list[i + 1][1]) # append the next day's closing price
 
         print('X: {}'.format(X.shape))
-        # print('y: {}'.format(y.shape))
+        print('y: {}'.format(y.shape))
         train_size = int(len(X) * (1.0 - self.test_ratio))
         train_X, test_X = X[:train_size], X[train_size:]
         train_y, test_y = y[:train_size], y[train_size:]
