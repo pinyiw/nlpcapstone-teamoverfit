@@ -1,4 +1,4 @@
-import nltk
+
 import langid
 import re
 import os
@@ -136,17 +136,34 @@ def count_word(lines):
     return word_count, total_word_count
 
 def output_data(lines, date2stock):
+    print("START WRITING")
     stock_keys = ['open', 'high', 'low', 'close', 'volume']
     with open(OUT_DIR + 'output.csv', 'w', encoding='utf-8') as file:
         file.write('date,open,high,low,close,volume,tweet\n')
+        token = []
         for date, text in lines:
+            print(date," ", text)
             if date not in date2stock:
                 continue
-            stock_data = date2stock[date]
-            tokens = tuple([date])
-            tokens += tuple([stock_data[key] for key in stock_keys])
-            tokens += tuple([text])
-            file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
+            if len(token) == 7 and token[0] != date:
+                print(token)
+                file.write('{},{},{},{},{},{},{}\n'.format(*token))
+                token = []
+            elif len(token) == 0 or token[0] == date:
+                if len(token) == 0:
+                    token.insert(0, date)
+                    stock_data = date2stock[date]
+                    token.insert(1, stock_data['open'])
+                    token.insert(2, stock_data['high'])
+                    token.insert(3, stock_data['low'])
+                    token.insert(4, stock_data['close'])
+                    token.insert(5, stock_data['volume'])
+                if len(token) == 6:
+                    token.insert(6, "")
+                token[6] += " " + text
+        if len(token) == 7:
+            print(token)
+            file.write('{},{},{},{},{},{},{}\n'.format(*token))
 
 def output_vocab(vocab_set):
     idx = 0
