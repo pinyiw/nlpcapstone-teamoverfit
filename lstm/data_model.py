@@ -64,13 +64,21 @@ class StockDataSet(object):
             count_vec = count_vec / np.linalg.norm(count_vec)
             x = np.array([np.append(count_vec, close)])
             X = np.concatenate((X, x), axis=0) # append closing price to feature
-            y = np.append(y, data_list[i + 1][1]) # append the next day's closing price
+            
+            if data_list[i + 1][1] - data_list[i][1] > 0:
+                y = np.append(y, 1)
+            else:
+                y = np.append(y, 0)
+          
+                
 
         print('X: {}'.format(X.shape))
         print('y: {}'.format(y.shape))
         train_size = int(len(X) * (1.0 - self.test_ratio))
         train_X, test_X = X[:train_size], X[train_size:]
         train_y, test_y = y[:train_size], y[train_size:]
+
+        
         return train_X, train_y, test_X, test_y
 
     def generate_one_epoch(self, batch_size):
@@ -84,4 +92,5 @@ class StockDataSet(object):
             batch_X = self.train_X[j * batch_size: (j + 1) * batch_size]
             batch_y = self.train_y[j * batch_size: (j + 1) * batch_size]
             assert set(map(len, batch_X)) == {self.num_steps}
+   
             yield batch_X, batch_y
