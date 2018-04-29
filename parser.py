@@ -139,14 +139,26 @@ def output_data(lines, date2stock):
     stock_keys = ['open', 'high', 'low', 'close', 'volume']
     with open(OUT_DIR + 'output.csv', 'w', encoding='utf-8') as file:
         file.write('date,open,high,low,close,volume,tweet\n')
+        prev_date = lines[0][0]
+        all_text = []
         for date, text in lines:
             if date not in date2stock:
                 continue
-            stock_data = date2stock[date]
-            tokens = tuple([date])
-            tokens += tuple([stock_data[key] for key in stock_keys])
-            tokens += tuple([text])
-            file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
+            if date != prev_date:
+                stock_data = date2stock[date]
+                tokens = tuple([prev_date])
+                tokens += tuple([stock_data[key] for key in stock_keys])
+                tokens += tuple([' '.join(all_text)])
+                file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
+                prev_date = date
+                all_text = [text]
+            else:
+                all_text.append(text)
+        stock_data = date2stock[date]
+        tokens = tuple([prev_date])
+        tokens += tuple([stock_data[key] for key in stock_keys])
+        tokens += tuple([' '.join(all_text)])
+        file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
 
 def output_vocab(vocab_set):
     idx = 0

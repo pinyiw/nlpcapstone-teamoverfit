@@ -1,11 +1,11 @@
 class RNNConfig():
     input_size = 1
-    num_steps = 30
-    lstm_size = 128
+    num_steps = 3
+    lstm_size = 5067
     num_layers = 1
     keep_prob = 0.8
 
-    batch_size = 64
+    batch_size = 16
     init_learning_rate = 0.001
     learning_rate_decay = 0.99
     init_epoch = 5
