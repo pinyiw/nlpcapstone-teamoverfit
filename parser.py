@@ -7,6 +7,9 @@ from time import time
 import json
 from functools import reduce
 import argparse
+from nltk.corpus import stopwords
+import nltk
+nltk.download('stopwords')
 
 EN_WHITELIST = '0123456789abcdefghijklmnopqrstuvwxyz '  # space is included in whitelist
 
@@ -19,6 +22,9 @@ num_tweet_ex = 5
 def add_arguments(parser):
     parser.add_argument("company",
                         help="The name of company")
+    parser.add_argument("-s", "--no-stopwords",
+                        help="Remove English stopwords",
+                        action="store_true")
 
 def print_lines(lines):
     for line in lines:
@@ -95,7 +101,7 @@ def is_number(s):
         return False
 
 # Clean text by removing unnecessary characters and altering the format of words.
-def clean_text(text, whitelist):
+def clean_text(text, whitelist, no_stopwords=False):
     text = text.lower()
     text = re.sub(r"i'm", "i am", text)
     text = re.sub(r"he's", "he is", text)
@@ -121,6 +127,11 @@ def clean_text(text, whitelist):
     pre_text = text
     # text = re.sub(r"[-()\"#/@;:<>{}`+=~|.!?,]", "", text)
     text = ''.join([ch for ch in text if ch in whitelist]).strip()
+    if no_stopwords:
+        stop_words = set(stopwords.words('english'))
+        text = ' '.join([word for word in text.split() if word not in stop_words])
+    else:
+        text = ' '.join([word for word in text.split()])
 
     return text if len(text) > 0 else pre_text
 
@@ -144,7 +155,6 @@ def output_data(lines, date2stock):
         tokens += [stock_data[key] for key in stock_keys]
         tokens += [' '.join(all_text)]
         file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
-    print("START WRITING")
     stock_keys = ['open', 'high', 'low', 'close', 'volume']
     with open(OUT_DIR + 'output.csv', 'w', encoding='utf-8') as file:
         file.write('date,open,high,low,close,volume,tweet\n')
@@ -196,9 +206,7 @@ def process_data():
     with timer:
         print('\nClean text...')
         # only keep alphabet and numbers
-        lines = [(date, clean_text(text, EN_WHITELIST)) for date, text in lines]
-        # remove extra white space
-        lines = [(date, ' '.join(text.split())) for date, text in lines]
+        lines = [(date, clean_text(text, EN_WHITELIST, no_stopwords=args.no_stopwords)) for date, text in lines]
         print_lines(lines[:num_tweet_ex])
         # sort by date
         lines = sorted(lines, key=lambda x : x[0])

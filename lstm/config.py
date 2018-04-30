@@ -1,15 +1,23 @@
 class RNNConfig():
-    input_size = 1
+    # number of days
     num_steps = 3
-    lstm_size = 5067
-    num_layers = 1
-    keep_prob = 0.8
+    # also lstm_size
+    num_features = 6001
+    # number of classes
+    num_classes = 2
+    include_stopwords = False
+
+    # lstm units
+    num_hidden = 200
+    num_layers = 3
+    dropout = 0.5
 
     batch_size = 16
-    init_learning_rate = 0.001
-    learning_rate_decay = 0.99
-    init_epoch = 5
-    max_epoch = 50
+    num_epoch = 10
+    # init_learning_rate = 0.001
+    # learning_rate_decay = 0.99
+    # init_epoch = 5
+    # max_epoch = 50
 
     def to_dict(self):
         dct = self.__class__.__dict__

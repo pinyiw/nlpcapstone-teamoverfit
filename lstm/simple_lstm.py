@@ -10,11 +10,11 @@ from data_model import StockDataSet as SDS
 
 
 max_features = 20000
-maxlen = 5076  # cut texts after this number of words (among top max_features most common words)
+maxlen = 6001  # cut texts after this number of words (among top max_features most common words)
 batch_size = 32
 
 print('Loading data...')
-data = SDS('apple')
+data = SDS('tesla', test_ratio=0.2)
 x_train, y_train, x_test, y_test = data.train_X, data.train_y, data.test_X, data.test_y
 print(len(x_train), 'train sequences')
 print(len(x_test), 'test sequences')
@@ -39,7 +39,7 @@ model.compile(loss='binary_crossentropy',
 print('Train...')
 model.fit(x_train, y_train,
           batch_size=batch_size,
-          epochs=2,
+          epochs=5,
           validation_data=(x_test, y_test))
 score, acc = model.evaluate(x_test, y_test,
                             batch_size=batch_size)
