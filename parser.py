@@ -6,9 +6,9 @@ from timer import Timer
 from time import time
 import json
 from functools import reduce
+import argparse
 
 EN_WHITELIST = '0123456789abcdefghijklmnopqrstuvwxyz '  # space is included in whitelist
-apple_tweets_path = './data/apple/tweets/'
 
 unk_url = '<url>'
 
@@ -16,7 +16,9 @@ min_word_count = 3
 max_line = -1
 num_tweet_ex = 5
 
-OUT_DIR = './data/apple/'
+def add_arguments(parser):
+    parser.add_argument("company",
+                        help="The name of company")
 
 def print_lines(lines):
     for line in lines:
@@ -24,9 +26,9 @@ def print_lines(lines):
 
 def read_tweets_data():
     result = []
-    for root, dirs, files in os.walk(apple_tweets_path):  
+    for root, dirs, files in os.walk(tweets_path):  
         for filename in files:
-            with open(apple_tweets_path + filename, 'r', encoding='utf-8') as file:
+            with open(tweets_path + filename, 'r', encoding='utf-8') as file:
                 # remove first line
                 next(file)
                 idx = 0
@@ -136,34 +138,38 @@ def count_word(lines):
     return word_count, total_word_count
 
 def output_data(lines, date2stock):
+    def write_tokens(file, date, all_text):
+        stock_data = date2stock[date]
+        tokens = [date]
+        tokens += [stock_data[key] for key in stock_keys]
+        tokens += [' '.join(all_text)]
+        file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
     print("START WRITING")
     stock_keys = ['open', 'high', 'low', 'close', 'volume']
     with open(OUT_DIR + 'output.csv', 'w', encoding='utf-8') as file:
         file.write('date,open,high,low,close,volume,tweet\n')
-        token = []
+        prev_date = lines[0][0]
+        all_text = []
         for date, text in lines:
-            print(date," ", text)
             if date not in date2stock:
                 continue
-            if len(token) == 7 and token[0] != date:
-                print(token)
-                file.write('{},{},{},{},{},{},{}\n'.format(*token))
-                token = []
-            elif len(token) == 0 or token[0] == date:
-                if len(token) == 0:
-                    token.insert(0, date)
-                    stock_data = date2stock[date]
-                    token.insert(1, stock_data['open'])
-                    token.insert(2, stock_data['high'])
-                    token.insert(3, stock_data['low'])
-                    token.insert(4, stock_data['close'])
-                    token.insert(5, stock_data['volume'])
-                if len(token) == 6:
-                    token.insert(6, "")
-                token[6] += " " + text
-        if len(token) == 7:
-            print(token)
-            file.write('{},{},{},{},{},{},{}\n'.format(*token))
+            if date != prev_date:
+                write_tokens(file, prev_date, all_text)
+                prev_date = date
+                all_text = [text]
+            else:
+                all_text.append(text)
+        write_tokens(file, prev_date, all_text)
+    with open(OUT_DIR + 'output_single_tweet.csv', 'w', encoding='utf-8') as file:
+        file.write('date,open,high,low,close,volume,tweet\n')
+        for date, text in lines:
+            if date not in date2stock:
+                continue
+            stock_data = date2stock[date]
+            tokens = [date]
+            tokens += [stock_data[key] for key in stock_keys]
+            tokens += [text]
+            file.write('{},{},{},{},{},{},{}\n'.format(*tokens))
 
 def output_vocab(vocab_set):
     idx = 0
@@ -222,4 +228,9 @@ def process_data():
     print('\nTotal time take: {}s'.format(time() - timer.start_time))
     
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    add_arguments(parser)
+    args = parser.parse_args()
+    OUT_DIR = './data/{}/'.format(args.company)
+    tweets_path = './data/{}/tweets/'.format(args.company)
     process_data()
