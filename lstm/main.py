@@ -1,7 +1,6 @@
 # Example for my blog post at:
 # https://danijar.com/introduction-to-recurrent-networks-in-tensorflow/
 import functools
-import sets
 import tensorflow as tf
 from data_model import StockDataSet
 from config import RNNConfig
@@ -176,7 +175,8 @@ class SequenceRegression:
 
 def main():
     tf.reset_default_graph()
-    logs_path = './tensorboard_output/'
+    logs_path = './tensorboard_output/model_' + datetime.strftime(datetime.now(), '%Y_%m_%d_%H_%M_%S')
+    os.mkdir(logs_path)
     config = RNNConfig()
     stock_data = StockDataSet(config.company, num_features=config.num_features,
                                  num_classes=config.num_classes,
@@ -213,8 +213,8 @@ def main():
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         # create log writer object
-        writer_train = tf.summary.FileWriter(logs_path + 'logs/plot_train') #, graph=tf.get_default_graph(), graph=tf.get_default_graph())
-        writer_val = tf.summary.FileWriter(logs_path + 'logs/plot_val')
+        writer_train = tf.summary.FileWriter(logs_path + 'plot_train') #, graph=tf.get_default_graph(), graph=tf.get_default_graph())
+        writer_val = tf.summary.FileWriter(logs_path + 'plot_val')
         batch_count = 0
         for epoch in range(config.num_epoch):
             for batch_X, batch_y in stock_data.generate_one_epoch(config.batch_size):
@@ -238,7 +238,7 @@ def main():
                 data: train_X, target: train_y, dropout: config.dropout})
             test_error = sess.run(model.error, {
                 data: test_X, target: test_y, dropout: config.dropout})
-            print('Epoch {:2d} cost: {:4.2} train error: {:4.2f}% test error: {:4.2f}%'.format(epoch + 1, 
+            print('Epoch {:2d} cost: {:6.3f} train error: {:4.2f}% test error: {:4.2f}%'.format(epoch + 1, 
                                                                               100 * train_cost,
                                                                               100 * train_error, 
                                                                               100 * test_error))
