@@ -1,0 +1,73 @@
+X: (269, 3, 6001)
+y: (269, 1)
+Default configuration: {'num_steps': 5, 'num_features': 5001, 'num_classes': 1, 'stay_percent': 0.005, 'include_stopwords': False, 'num_hidden': 1000, 'num_layers': 5, 'dropout': 0.5, 'batch_size': 16, 'num_epoch': 60, 'company': 'apple'}
+X: (267, 5, 5001)
+y: (267, 1)
+train data shape: (213, 5, 5001)
+train target shape: (213, 1)
+/home/sdw/miniconda3/envs/nlp-capstone/lib/python3.6/site-packages/tensorflow/python/ops/gradients_impl.py:100: UserWarning: Converting sparse IndexedSlices to a dense Tensor of unknown shape. This may consume a large amount of memory.
+  "Converting sparse IndexedSlices to a dense Tensor of unknown shape. "
+2018-05-10 08:20:24.936037: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+Epoch  1 cost:  1.254 train error: 63.38% test error: 62.96%
+Epoch  2 cost:  1.000 train error: 63.85% test error: 62.96%
+Epoch  3 cost:  0.694 train error: 62.44% test error: 61.11%
+Epoch  4 cost:  0.497 train error: 66.20% test error: 66.67%
+Epoch  5 cost:  0.473 train error: 66.20% test error: 72.22%
+Epoch  6 cost:  0.462 train error: 65.26% test error: 66.67%
+Epoch  7 cost:  0.479 train error: 67.61% test error: 64.81%
+Epoch  8 cost:  0.475 train error: 64.32% test error: 64.81%
+Epoch  9 cost:  0.459 train error: 61.03% test error: 70.37%
+Epoch 10 cost:  0.465 train error: 66.20% test error: 64.81%
+Epoch 11 cost:  0.585 train error: 63.85% test error: 61.11%
+Epoch 12 cost:  0.642 train error: 63.38% test error: 62.96%
+Epoch 13 cost:  0.480 train error: 63.85% test error: 64.81%
+Epoch 14 cost:  0.400 train error: 67.61% test error: 72.22%
+Epoch 15 cost:  0.596 train error: 63.38% test error: 62.96%
+Epoch 16 cost:  0.398 train error: 70.42% test error: 79.63%
+Epoch 17 cost:  0.343 train error: 66.67% test error: 59.26%
+Epoch 18 cost:  0.454 train error: 63.38% test error: 62.96%
+Epoch 19 cost:  0.313 train error: 65.73% test error: 66.67%
+Epoch 20 cost:  0.309 train error: 73.71% test error: 74.07%
+Epoch 21 cost:  0.290 train error: 68.08% test error: 72.22%
+Epoch 22 cost:  0.272 train error: 65.73% test error: 42.59%
+Epoch 23 cost:  0.259 train error: 64.32% test error: 57.41%
+Epoch 24 cost:  0.260 train error: 64.79% test error: 59.26%
+Epoch 25 cost:  0.238 train error: 68.08% test error: 75.93%
+Epoch 26 cost:  0.217 train error: 65.26% test error: 55.56%
+Epoch 27 cost:  0.239 train error: 62.91% test error: 64.81%
+Epoch 28 cost:  0.195 train error: 69.95% test error: 59.26%
+Epoch 29 cost:  0.182 train error: 67.61% test error: 51.85%
+Epoch 30 cost:  0.172 train error: 68.08% test error: 55.56%
+Epoch 31 cost:  0.168 train error: 62.91% test error: 57.41%
+Epoch 32 cost:  0.167 train error: 70.42% test error: 81.48%
+Epoch 33 cost:  0.146 train error: 70.42% test error: 53.70%
+Epoch 34 cost:  0.148 train error: 69.01% test error: 81.48%
+Epoch 35 cost:  0.124 train error: 64.32% test error: 62.96%
+Epoch 36 cost:  0.118 train error: 69.01% test error: 72.22%
+Epoch 37 cost:  0.107 train error: 68.54% test error: 61.11%
+Epoch 38 cost:  0.103 train error: 63.85% test error: 62.96%
+Epoch 39 cost:  0.095 train error: 64.32% test error: 62.96%
+Epoch 40 cost:  0.105 train error: 67.61% test error: 77.78%
+Epoch 41 cost:  0.097 train error: 69.95% test error: 74.07%
+Epoch 42 cost:  0.085 train error: 69.95% test error: 70.37%
+Epoch 43 cost:  0.075 train error: 69.01% test error: 57.41%
+Epoch 44 cost:  0.072 train error: 61.97% test error: 53.70%
+Epoch 45 cost:  0.068 train error: 64.79% test error: 62.96%
+Epoch 46 cost:  0.065 train error: 70.89% test error: 53.70%
+Epoch 47 cost:  0.067 train error: 60.09% test error: 50.00%
+Epoch 48 cost:  0.060 train error: 61.97% test error: 51.85%
+Epoch 49 cost:  0.054 train error: 70.42% test error: 57.41%
+Epoch 50 cost:  0.054 train error: 60.56% test error: 57.41%
+Epoch 51 cost:  0.053 train error: 63.38% test error: 62.96%
+Epoch 52 cost:  0.052 train error: 68.54% test error: 53.70%
+Epoch 53 cost:  0.048 train error: 67.14% test error: 61.11%
+Epoch 54 cost:  0.047 train error: 64.79% test error: 64.81%
+Epoch 55 cost:  0.046 train error: 67.14% test error: 70.37%
+Epoch 56 cost:  0.046 train error: 68.54% test error: 59.26%
+Epoch 57 cost:  0.041 train error: 65.26% test error: 59.26%
+Epoch 58 cost:  0.041 train error: 65.73% test error: 66.67%
+Epoch 59 cost:  0.042 train error: 65.73% test error: 68.52%
+Epoch 60 cost:  0.038 train error: 64.32% test error: 55.56%
+[(-0.36163032054901123, 2.68888336424278), (0.5264699459075928, -0.03636127524187494), (-0.28275996446609497, 0.10002987905479344), (0.5454704165458679, 1.517303264130159), (-0.42863041162490845, 0.06264130819889213), (-0.13025254011154175, -0.5097599036329276), (0.2452172338962555, 0.5033827910594519), (1.0279640555381775, -0.1967670336730903), (-0.6520718336105347, -0.09857748482930682), (-0.28817057609558105, -0.8434037115621471), (-0.28372257947921753, -0.9319057958170887), (0.32451003789901733, 0.3744983315768511), (0.10614767670631409, -0.7189088627054887), (-0.6963327527046204, 0.7699327875045279), (-0.392681360244751, 0.9822043319061996), (0.318734347820282, 0.9817479782001197), (0.6991125643253326, 1.6321988230551623), (0.67911297082901, -0.5704262931513064), (-0.07331669330596924, 1.668147964049053), (0.9446591138839722, 0.0), (0.29921531677246094, 0.5469257899202619), (0.1485690474510193, 0.129491117525967), (-0.1968003809452057, 0.5777336337395744), (0.4073411226272583, 0.2657336540564141), (0.426974892616272, 0.09404268386304092), (0.8782655000686646, -0.6577674429955217), (0.3941729664802551, 0.1978384287329926), (0.7091313600540161, 0.6350726835563982), (-0.21380260586738586, -0.4264234634703598), (0.09555220603942871, -0.025689734417074964), (0.542120635509491, -0.7795429198728877), (0.5620278418064117, 0.2848804585571224), (0.6758317351341248, -0.11190683448593444), (-0.7708564400672913, 0.5085417961910798), (0.6428919732570648, 1.1148285673289329), (0.1196637749671936, 0.9158967135012738), (-0.2527475357055664, 0.1009189021875595), (0.023771822452545166, 0.5373203364569159), (0.025750696659088135, -0.4175566334081075), (0.0881783664226532, -0.17615876362043456), (0.17601102590560913, 0.8064979220465356), (0.1378975808620453, -0.008332036766386249), (-0.8187919855117798, -0.17498735210466132), (1.0459847748279572, 0.18364143243725156), (-0.09812116622924805,0.06665629413110206), (0.18958300352096558, -0.09159135302859948), (-0.06583631038665771, 1.592072040813379), (-0.46928077936172485, 0.04922108470547297), (0.22069811820983887, 0.00819947824544425), (0.7924243807792664, -0.2624454528418042), (0.04073977470397949, -0.2301706399901355), (0.22531002759933472, 6.098039792671178), (0.0783771276473999, 1.196168457287398), (-0.1907557249069214, 0.9517313852883365)]
+[('STAY', 'UP'), ('UP', 'STAY'), ('STAY', 'STAY'), ('UP', 'UP'), ('STAY', 'STAY'), ('STAY', 'DOWN'), ('STAY', 'UP'), ('UP', 'STAY'), ('DOWN', 'STAY'), ('STAY', 'DOWN'), ('STAY', 'DOWN'), ('STAY', 'STAY'), ('STAY', 'DOWN'), ('DOWN', 'UP'), ('STAY', 'UP'), ('STAY', 'UP'), ('UP', 'UP'), ('UP', 'DOWN'), ('STAY', 'UP'), ('UP', 'STAY'), ('STAY', 'UP'), ('STAY', 'STAY'), ('STAY', 'UP'), ('STAY', 'STAY'), ('STAY', 'STAY'), ('UP', 'DOWN'), ('STAY', 'STAY'), ('UP', 'UP'), ('STAY', 'STAY'), ('STAY', 'STAY'), ('UP', 'DOWN'), ('UP', 'STAY'), ('UP', 'STAY'), ('DOWN', 'UP'), ('UP', 'UP'), ('STAY', 'UP'), ('STAY', 'STAY'), ('STAY', 'UP'), ('STAY', 'STAY'), ('STAY', 'STAY'), ('STAY', 'UP'), ('STAY', 'STAY'), ('DOWN', 'STAY'), ('UP', 'STAY'), ('STAY', 'STAY'), ('STAY', 'STAY'), ('STAY', 'UP'), ('STAY', 'STAY'), ('STAY', 'STAY'), ('UP', 'STAY'), ('STAY', 'STAY'), ('STAY', 'UP'), ('STAY', 'UP'), ('STAY', 'UP')]
+59.25925925925925

@@ -225,27 +225,27 @@ def main():
                     data: batch_X, target: batch_y, dropout: config.dropout})
             # loss train
             summary = sess.run(summary_op, {
-                data: train_X, target: train_y, dropout: config.dropout})
+                data: train_X, target: train_y, dropout: 0})
             writer_train.add_summary(summary, epoch)
             writer_train.flush()
             # loss validation
             summary = sess.run(summary_op, {
-                data: test_X, target: test_y, dropout: config.dropout})
+                data: test_X, target: test_y, dropout: 0})
             writer_val.add_summary(summary, epoch)
             writer_val.flush()
             # calculate train and test error
             train_cost = sess.run(model.cost, {
-                data: train_X, target: train_y, dropout: config.dropout})
+                data: train_X, target: train_y, dropout: 0})
             train_error = sess.run(model.error, {
-                data: train_X, target: train_y, dropout: config.dropout})
+                data: train_X, target: train_y, dropout: 0})
             test_error = sess.run(model.error, {
-                data: test_X, target: test_y, dropout: config.dropout})
+                data: test_X, target: test_y, dropout: 0})
             print('Epoch {:2d} cost: {:6.3f} train error: {:4.2f}% test error: {:4.2f}%'.format(epoch + 1, 
                                                                               100 * train_cost,
                                                                               100 * train_error, 
                                                                               100 * test_error))
         prediction = sess.run(model.prediction, 
-                        {data: test_X, target: test_y, dropout: config.dropout})
+                        {data: test_X, target: test_y, dropout: 0})
         if config.num_classes == 3:
             prediction = [pred.index(max(pred)) for pred in prediction.tolist()]
             expected = [y.index(max(y)) for y in test_y.tolist()]
@@ -265,11 +265,11 @@ def main():
                                 list(zip(prediction, expected)), 0)
             print(mistakes / len(prediction) * 100)
             print(sess.run(model.error, {
-                data: test_X, target: test_y, dropout: config.dropout}) * 100)
+                data: test_X, target: test_y, dropout: 0}) * 100)
             print(sess.run(model.error, {
-                data: test_X, target: test_y, dropout: config.dropout}) * 100)
+                data: test_X, target: test_y, dropout: 0}) * 100)
             print(sess.run(model.error, {
-                data: test_X, target: test_y, dropout: config.dropout}) * 100)
+                data: test_X, target: test_y, dropout: 0}) * 100)
 
 if __name__ == '__main__':
     main()

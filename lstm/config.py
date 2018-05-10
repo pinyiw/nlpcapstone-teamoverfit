@@ -15,7 +15,7 @@ class RNNConfig():
     dropout = 0.5
 
     batch_size = 16
-    num_epoch = 60
+    num_epoch = 10
 
     company = 'apple'
 
