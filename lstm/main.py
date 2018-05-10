@@ -213,15 +213,24 @@ def main():
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
         # create log writer object
-        writer = tf.summary.FileWriter(logs_path, graph=tf.get_default_graph())
-
+        writer_train = tf.summary.FileWriter(logs_path + 'logs/plot_train') #, graph=tf.get_default_graph(), graph=tf.get_default_graph())
+        writer_val = tf.summary.FileWriter(logs_path + 'logs/plot_val')
         batch_count = 0
         for epoch in range(config.num_epoch):
             for batch_X, batch_y in stock_data.generate_one_epoch(config.batch_size):
                 batch_count += 1
-                _, summary = sess.run([model.optimize, summary_op], {
+                sess.run(model.optimize, {
                     data: batch_X, target: batch_y, dropout: config.dropout})
-                writer.add_summary(summary, batch_count)
+            # loss train
+            summary = sess.run(summary_op, {
+                data: train_X, target: train_y, dropout: config.dropout})
+            writer_train.add_summary(summary, epoch)
+            writer_train.flush()
+            # loss validation
+            summary = sess.run(summary_op, {
+                data: test_X, target: test_y, dropout: config.dropout})
+            writer_val.add_summary(summary, epoch)
+            writer_val.flush()
             # calculate train and test error
             train_cost = sess.run(model.cost, {
                 data: train_X, target: train_y, dropout: config.dropout})
