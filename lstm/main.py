@@ -5,6 +5,8 @@ import tensorflow as tf
 from data_model import StockDataSet
 from config import RNNConfig
 from functools import reduce
+from datetime import datetime
+import os
 
 # https://danijar.com/structuring-your-tensorflow-models/
 def define_scope(function):
