@@ -177,7 +177,7 @@ class SequenceRegression:
 
 def main():
     tf.reset_default_graph()
-    logs_path = './tensorboard_output/model_' + datetime.strftime(datetime.now(), '%Y_%m_%d_%H_%M_%S')
+    logs_path = './tensorboard_output/model_' + datetime.strftime(datetime.now(), '%Y_%m_%d_%H_%M_%S') + '/'
     os.mkdir(logs_path)
     config = RNNConfig()
     stock_data = StockDataSet(config.company, num_features=config.num_features,
