@@ -86,7 +86,7 @@ class SequenceClassification:
     @define_scope
     def optimize(self):
         learning_rate = 0.0003
-        optimizer = tf.train.RMSPropOptimizer(learning_rate)
+        optimizer = tf.train.AdamOptimizer(learning_rate)
         return optimizer.minimize(self.cost)
 
     @define_scope
@@ -144,7 +144,7 @@ class SequenceRegression:
 
     @define_scope
     def cost(self):
-        beta = 0.01
+        beta = 0.001
         weight_regularizer = tf.nn.l2_loss(self.weight)
         bias_regularizer = tf.nn.l2_loss(self.bias)
         mean_squared_loss = tf.reduce_mean(tf.squared_difference(self.prediction, self.target))
