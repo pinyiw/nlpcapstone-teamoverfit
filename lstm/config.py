@@ -10,7 +10,7 @@ class RNNConfig():
     include_stopwords = False
 
     # lstm units
-    num_hidden = 2000
+    num_hidden = 1000
     num_layers = 5
     dropout = 0.5
 

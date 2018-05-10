@@ -145,9 +145,11 @@ class SequenceRegression:
     def cost(self):
         beta = 0.01
         weight_regularizer = tf.nn.l2_loss(self.weight)
-        bias_regularizer = tf.nn.l2_loss(self.biased)
+        bias_regularizer = tf.nn.l2_loss(self.bias)
         mean_squared_loss = tf.reduce_mean(tf.squared_difference(self.prediction, self.target))
-        loss = tf.reduce_mean(loss + beta * weight_regularizer + beta * bias_regularizer)
+        loss = tf.reduce_mean(mean_squared_loss + 
+                            beta * weight_regularizer + 
+                            beta * bias_regularizer)
         return loss
 
     @define_scope
@@ -221,12 +223,12 @@ def main():
                     data: batch_X, target: batch_y, dropout: config.dropout})
                 writer.add_summary(summary, batch_count)
             # calculate train and test error
+            train_cost = sess.run(model.cost, {
+                data: train_X, target: train_y, dropout: config.dropout})
             train_error = sess.run(model.error, {
                 data: train_X, target: train_y, dropout: config.dropout})
             test_error = sess.run(model.error, {
                 data: test_X, target: test_y, dropout: config.dropout})
-            train_cost = sess.run(model.cost, {
-                data: train_X, target: train_y, dropout: config.dropout}))
             print('Epoch {:2d} cost: {:4.2} train error: {:4.2f}% test error: {:4.2f}%'.format(epoch + 1, 
                                                                               100 * train_cost,
                                                                               100 * train_error, 
