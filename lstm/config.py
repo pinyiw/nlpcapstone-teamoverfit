@@ -1,19 +1,24 @@
 class RNNConfig():
     # number of days
-    num_steps = 3
+    num_steps = 5
     # also lstm_size
-    num_features = 6001
+    num_features = 5001
     # number of classes
-    num_classes = 2
+    num_classes = 1
+    # only matters when num_classes == 3
+    stay_percent = 0.005
     include_stopwords = False
 
     # lstm units
-    num_hidden = 200
-    num_layers = 3
+    num_hidden = 2000
+    num_layers = 5
     dropout = 0.5
 
     batch_size = 16
-    num_epoch = 10
+    num_epoch = 50
+
+    company = 'apple'
+
     # init_learning_rate = 0.001
     # learning_rate_decay = 0.99
     # init_epoch = 5

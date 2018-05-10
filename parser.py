@@ -9,7 +9,10 @@ from functools import reduce
 import argparse
 from nltk.corpus import stopwords
 import nltk
+from nltk.stem import WordNetLemmatizer
+from nltk.stem.porter import PorterStemmer
 nltk.download('stopwords')
+nltk.download('wordnet')
 
 EN_WHITELIST = '0123456789abcdefghijklmnopqrstuvwxyz '  # space is included in whitelist
 
@@ -127,11 +130,15 @@ def clean_text(text, whitelist, no_stopwords=False):
     pre_text = text
     # text = re.sub(r"[-()\"#/@;:<>{}`+=~|.!?,]", "", text)
     text = ''.join([ch for ch in text if ch in whitelist]).strip()
+    # lemmatization
+    lemmatizer = WordNetLemmatizer()
+    # stemming
+    stemmer = PorterStemmer()
     if no_stopwords:
         stop_words = set(stopwords.words('english'))
-        text = ' '.join([word for word in text.split() if word not in stop_words])
+        text = ' '.join([stemmer.stem(lemmatizer.lemmatize(word)) for word in text.split() if word not in stop_words])
     else:
-        text = ' '.join([word for word in text.split()])
+        text = ' '.join([stemmer.stem(lemmatizer.lemmatize(word)) for word in text.split()])
 
     return text if len(text) > 0 else pre_text
 
@@ -219,6 +226,7 @@ def process_data():
         print('Total number of words: {}'.format(len(word_count)))
         print('Vocab size: {}'.format(len(vocab_set)))
         print('{:.2%} of words in vocab.'.format(used_vocab_count / total_word_count))
+
 
     with timer:
         print('\nLoading stock data...')

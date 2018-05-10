@@ -1,4 +1,4 @@
-numpy>=1.14.2
+numpy>=1.14.3
 scipy>=1.0.1
 pandas>=0.22.0
 sklearn>=0.0
@@ -6,3 +6,4 @@ nltk>=3.2.5
 langid>=1.1.6
 keras>=2.1.6
 tensorflow>=1.8.0
+tensorboard>=1.8.0
